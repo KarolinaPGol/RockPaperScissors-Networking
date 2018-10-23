@@ -5,20 +5,18 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 public class Server{
-//private static ServerSocket serverSocket;
 
 public static void main(String[] args){
 		
 		
-			System.out.println("hello1 im in main");
 		
 		new Thread( () -> {
 			try {
-				System.out.println("hello2 im in try");
+				System.out.println("Server Started");
 				//----------------------SOCKET SET UP----------------------
 				 
 				
-				ServerSocket serverSocket = new ServerSocket(9300);
+				ServerSocket serverSocket = new ServerSocket(9900);
 				 // Listen for a connection request
 				
 				Player[] players = new Player[3];
@@ -29,7 +27,7 @@ public static void main(String[] args){
 				 //--
 				for(int i=0; i<players.length; i++){
 					players[i].setSocket(serverSocket);
-					System.out.println("hello3 im after socket setup no: " + i);
+					System.out.println("Client " + i + " is connected");
 				}
 				 
 			     new Thread(new HandleSession(players)).start();
@@ -56,7 +54,7 @@ class HandleSession implements Runnable{
 		try{
 		
 			
-			System.out.println("hello im in run()");
+			System.out.println("All clients connected");
 			Scanner qScan = new Scanner(System.in);
 			
 			// Create data input and output streams
@@ -69,13 +67,13 @@ class HandleSession implements Runnable{
 			
 			for(int i=0; i<players.length;  i++){
 				players[i].askWantToStartGame();
-				System.out.println("received wantToStartGame var" + i + " :" + players[i].getWantToStartGame());
-				players[i].toClient.writeUTF("You are connected to server");
+				System.out.println("Client " + i + " wants to start game: " + players[i].getWantToStartGame());
+				//players[i].toClient.writeUTF("You are connected to server");
 			}
 
 			for(int i=0; i<players.length;  i++){
 				players[i].setUsername();
-				System.out.println("username"+i+" : " + players[i].username );
+				System.out.println("Client " + i + " username: " + players[i].username );
 			}
 
 
@@ -125,7 +123,7 @@ class HandleSession implements Runnable{
 	
 		 	     }
 		 	     
-		 	     //PLAYER 1 WIN
+	     //PLAYER 1 WIN
 		 	     if((players[0].tool == 0 && players[1].tool == 2 && players[2].tool == 2) ||
 		 	    	(players[0].tool == 1 && players[1].tool == 0 && players[2].tool == 0) ||
 		 	    	(players[0].tool == 2 && players[1].tool == 1 && players[2].tool == 1) ) {
@@ -188,20 +186,20 @@ class HandleSession implements Runnable{
 		 	     
 		for(int i=0; i<players.length; i++){
 			players[i].setPlayAgain();
-			System.out.println("player"+i+" input: "+ players[i].playAgain);
+			System.out.println("player "+i+ " wants to play again: "+ players[i].playAgain);
 		}
 		
 	    
 	    if(players[0].playAgain.equals("y") && players[1].playAgain.equals("y") && players[2].playAgain.equals("y") ) {
 	    	
 	    	playAgain = true;
-	    	 System.out.println("inside if"+playAgain);
+	    	
 	    }
-	    else
+	    else if(players[0].playAgain.equals("n") || players[1].playAgain.equals("n")  || players[2].playAgain.equals("n") ){
 	    	playAgain = false;
+	    }
 	    
-	   System.out.println("playAgain " + playAgain);
-	   System.out.println("after if");
+	    
 	   if(playAgain == true){
 	   players[0].toClient.writeUTF("Everybody wants to play again! Lets do it");
 	   players[1].toClient.writeUTF("Everybody wants to play again! Lets do it");
@@ -211,16 +209,25 @@ class HandleSession implements Runnable{
 	   players[1].toClient.writeBoolean(playAgain);
 	   players[2].toClient.writeBoolean(playAgain);
 	   }
-	   System.out.println("after outputs");
 	   
-		}while(playAgain);
-		
+	   if(playAgain == false) {
+		   players[0].toClient.writeUTF("A player selected no to play again, ending game");
+		   players[1].toClient.writeUTF("A player selected no to play again, ending game");
+		   players[2].toClient.writeUTF("A player selected no to play again, ending game");
+		  
+		   players[0].toClient.writeBoolean(playAgain);
+		   players[1].toClient.writeBoolean(playAgain);
+		   players[2].toClient.writeBoolean(playAgain);
+	   }
+	   
+		}while(playAgain == true);
+		System.exit(0);
 		}catch(IOException ex) {
 		} 
 	}
 	
-	
-	
-	
-	
 }
+
+
+
+
