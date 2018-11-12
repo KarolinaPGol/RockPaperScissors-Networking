@@ -1,0 +1,45 @@
+//Write a program where a new linked list is defined. The list is used to store Strings.
+// Add the following elements in the list: blue, green, yellow, white. Then add the element "red" in position 1.
+// Print on the console the contents of the list both forward and backward.
+// Then, delete the last element in the list and add it to the head of the list.
+// Print on the console the list forward and backward again.
+
+import java.util.*;
+public class Assigment1 {
+    public static void main(String args[]){
+
+        LinkedList<String> linkedList = new LinkedList<String>();
+
+        linkedList.add("blue");
+        linkedList.add("green");
+        linkedList.add("yellow");
+        linkedList.add("white");
+
+        System.out.println("linkedList content: " + linkedList);
+        
+        linkedList.addFirst("red");
+        
+        
+        System.out.println("linkedList content forward: " + linkedList);
+        listBackwards(linkedList);
+             
+        
+        String element = linkedList.getLast();
+        linkedList.removeLast();
+        linkedList.addFirst(element);
+        
+        System.out.println("linkedList content forward: " + linkedList);
+        listBackwards(linkedList);
+
+    }
+    
+    static void listBackwards(LinkedList linkedList){
+    	System.out.print("linkedList content backwards: [");
+        for(int i=linkedList.size(); i>0; i--){
+        	 
+        	 System.out.print(linkedList.get(i-1)+", ");
+        }
+        System.out.println("]");
+    }
+
+}

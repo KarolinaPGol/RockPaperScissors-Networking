@@ -1,0 +1,48 @@
+////Exercise 24.5 from the book:
+// (Implement GenericQueue using inheritance) In Section 24.5, Stacks and Queues, GenericQueue is 
+// implemented using composition. Define a new queue class that extends java.util.LinkedList. v
+// (Note: define the methods enqueue, dequeue, getSize, and toString for this subclass by 
+// using the methods defined in the superclass). 
+// In the main method, define a new queue object of type
+// String and add three elements: Tom, George, and Peter. 
+// Then call the toString method to print the contents of the queue in the console)
+
+import java.util.*;
+public class Assigment2{
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		
+		GenericQueue<String> queue = new GenericQueue();
+		
+		queue.enqueue("Tom");
+		queue.enqueue("George");
+		queue.enqueue("Peter");
+		
+		System.out.println(queue.get(0).toString());
+		System.out.println(queue.get(1).toString());
+		System.out.println(queue.get(2).toString());
+		
+	}
+}
+
+class GenericQueue<E> extends java.util.LinkedList<E>{
+	
+	
+	void enqueue(E e){
+		addLast(e);
+	}
+	
+	E dequeue(){
+		return removeFirst();
+	}
+	
+	int getSize(){
+		return size();
+	}
+	
+	public String toString(){
+		return this.toString();
+		
+	}
+}

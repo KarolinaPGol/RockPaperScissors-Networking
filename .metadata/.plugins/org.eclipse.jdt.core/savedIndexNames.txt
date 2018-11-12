@@ -1,0 +1,2 @@
+INDEX VERSION 1.130+C:\Users\ZW\Documents\GitHub\RockPaperScissors-Networking\.metadata\.plugins\org.eclipse.jdt.core
+1315726650.index
